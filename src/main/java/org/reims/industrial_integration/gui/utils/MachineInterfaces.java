@@ -1,0 +1,16 @@
+package org.reims.industrial_integration.gui.utils;
+
+import java.util.ArrayList;
+
+public class MachineInterfaces {
+    public static final MachineInterfaceData COMPRESSOR =
+            new MachineInterfaceData("compressor", "Compressor",
+                    "textures/gui/compressor_gui.png", 176, 166,
+                    new Progressbar(176, 0, 69, 38, 20, 13, Progressbar.AnimationDirection.Right),
+                    2, new ArrayList<>() {{
+                        add(new MachineSlot(0, 44, 36));
+                        add(new MachineSlot(1, 98, 36));
+                    }},
+                    new EnergyBar(243, 0, 145, 20, 13, 48, 16000)
+            );
+}
