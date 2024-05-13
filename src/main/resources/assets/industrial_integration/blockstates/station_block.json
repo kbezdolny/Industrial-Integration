@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "industrial_integration:block/station_block"
+    },
+    "facing=east": {
+      "model": "industrial_integration:block/station_block",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "industrial_integration:block/station_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "industrial_integration:block/station_block",
+      "y": 270
+    }
+  }
+}
