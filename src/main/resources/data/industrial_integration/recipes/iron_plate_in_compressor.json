@@ -1,0 +1,14 @@
+{
+  "type": "industrial_integration:compressor",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "output": {
+    "item": "industrial_integration:iron_plate",
+    "count": 1
+  },
+  "speed": 140,
+  "energy_req": 32
+}

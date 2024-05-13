@@ -1,0 +1,13 @@
+{
+  "type": "industrial_integration:station",
+  "ingredients": [
+    {
+      "item": "industrial_integration:transistor"
+    }
+  ],
+  "output": {
+    "item": "industrial_integration:electronic_circuit",
+    "count": 1
+  },
+  "speed": 120
+}

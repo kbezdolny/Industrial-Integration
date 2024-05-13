@@ -1,0 +1,13 @@
+{
+  "type": "industrial_integration:station",
+  "ingredients": [
+    {
+      "item": "industrial_integration:sawdust"
+    }
+  ],
+  "output": {
+    "item": "industrial_integration:raw_rubber",
+    "count": 2
+  },
+  "speed": 78
+}

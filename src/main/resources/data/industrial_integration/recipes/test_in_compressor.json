@@ -1,0 +1,14 @@
+{
+  "type": "industrial_integration:compressor",
+  "ingredients": [
+    {
+      "item": "industrial_integration:sawdust"
+    }
+  ],
+  "output": {
+    "item": "industrial_integration:raw_rubber",
+    "count": 1
+  },
+  "speed": 200,
+  "energy_req": 100
+}

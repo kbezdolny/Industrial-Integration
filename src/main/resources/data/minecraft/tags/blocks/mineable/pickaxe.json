@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "industrial_integration:test_block",
+    "industrial_integration:station_block",
+    "industrial_integration:compressor_block"
+  ]
+}

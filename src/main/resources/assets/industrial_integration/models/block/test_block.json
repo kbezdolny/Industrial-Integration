@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_integration:block/test_block",
+    "up": "industrial_integration:block/test_block",
+    "north": "industrial_integration:block/test_block",
+    "east": "industrial_integration:block/test_block",
+    "south": "industrial_integration:block/test_block",
+    "west": "industrial_integration:block/test_block",
+    "particle": "industrial_integration:block/test_block"
+  }
+}
