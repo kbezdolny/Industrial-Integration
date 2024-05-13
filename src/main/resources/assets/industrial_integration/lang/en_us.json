@@ -1,0 +1,17 @@
+{
+  "itemGroup.industrial_integration": "Industrial Integration",
+  "item.industrial_integration.incomplete_raw_rubber": "Incomplete Raw Rubber",
+  "item.industrial_integration.raw_rubber": "Raw Rubber",
+  "item.industrial_integration.sawdust": "Sawdust",
+  "item.industrial_integration.capacitor": "Capacitor",
+  "item.industrial_integration.diode": "Diode",
+  "item.industrial_integration.inductor": "Inductor",
+  "item.industrial_integration.resistor": "Resistor",
+  "item.industrial_integration.transistor": "Transistor",
+  "item.industrial_integration.electronic_circuit": "Electronic Circuit",
+  "item.industrial_integration.iron_plate": "Iron Plate",
+
+  "block.industrial_integration.test_block": "Test Block",
+  "block.industrial_integration.station_block": "Station Block",
+  "block.industrial_integration.compressor_block": "Compressor"
+}
