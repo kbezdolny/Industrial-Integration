@@ -7,6 +7,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -31,9 +34,14 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
         void accept(T t, U u, V v, I i, O o);
     }
 
+    interface MenuFactory<Menu extends AbstractContainerMenu> {
+        Menu create(int id, Inventory inventory, BlockEntity entity, ContainerData data);
+    }
+
     public static MachineInterfaceData machineData;
     protected static final int defaultSpeed = 78;
 
+    protected MenuFactory<?  extends AbstractContainerMenu> menuFactory;
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected final ContainerData data;
@@ -41,8 +49,9 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     protected int maxProgress = defaultSpeed;
 
     public AbstractMachineBlockEntity(BlockEntityType<? extends AbstractMachineBlockEntity> pType,
-                                      BlockPos pPos, BlockState pBlockState) {
+                                      BlockPos pPos, BlockState pBlockState, MenuFactory<?  extends AbstractContainerMenu> menuFactory) {
         super(pType, pPos, pBlockState);
+        this.menuFactory = menuFactory;
         itemHandler = new ItemStackHandler(machineData.slotsCount) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -96,8 +105,9 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
                     Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
                             (index, stack) -> itemHandler.isItemValid(0, stack))));
 
+    @NotNull
     @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
         if (cap != ForgeCapabilities.ITEM_HANDLER) {
             return super.getCapability(cap, side);
         }
@@ -130,7 +140,13 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
         return Component.literal(machineData.displayedName);
     }
 
+    @Nullable
     @Override
+    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        return menuFactory.create(pContainerId, pPlayerInventory, this.level.getBlockEntity(pPlayerInventory.player.blockPosition()), this.data);
+    }
+
+        @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);

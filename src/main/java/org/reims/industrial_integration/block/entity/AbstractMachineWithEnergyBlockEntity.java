@@ -30,8 +30,9 @@ public abstract class AbstractMachineWithEnergyBlockEntity extends AbstractMachi
         }
     };
 
-    public AbstractMachineWithEnergyBlockEntity(BlockEntityType<? extends AbstractMachineBlockEntity> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
+    public AbstractMachineWithEnergyBlockEntity(BlockEntityType<? extends AbstractMachineBlockEntity> pType, BlockPos pPos, BlockState pBlockState,
+                                                MenuFactory<?  extends AbstractContainerMenu> blockFactory) {
+        super(pType, pPos, pBlockState, blockFactory);
     }
 
     private LazyOptional<IEnergyStorage> lazyEnergyStorage = LazyOptional.empty();
@@ -40,7 +41,7 @@ public abstract class AbstractMachineWithEnergyBlockEntity extends AbstractMachi
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
         ENERGY_STORAGE.onEnergyChanged();
-        return null;
+        return super.createMenu(pContainerId, pPlayerInventory, pPlayer);
     }
 
     @Override
