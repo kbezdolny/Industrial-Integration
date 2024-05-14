@@ -3,6 +3,7 @@ package org.reims.industrial_integration.block.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -31,18 +32,18 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     }
 
     public static MachineInterfaceData machineData;
+    protected static final int defaultSpeed = 78;
+
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-
-    protected static final int defaultSpeed = 78;
     protected final ContainerData data;
     protected int progress = 0;
     protected int maxProgress = defaultSpeed;
 
     public AbstractMachineBlockEntity(BlockEntityType<? extends AbstractMachineBlockEntity> pType,
-                                      BlockPos pPos, BlockState pBlockState, int slotsCount) {
+                                      BlockPos pPos, BlockState pBlockState) {
         super(pType, pPos, pBlockState);
-        itemHandler = new ItemStackHandler(slotsCount) {
+        itemHandler = new ItemStackHandler(machineData.slotsCount) {
             @Override
             protected void onContentsChanged(int slot) {
                 setChanged();
@@ -50,18 +51,11 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
             @Override
             public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                for (int i = 0; i < slotsCount; i++) {
-                    if (i != slot) {
-                        return super.isItemValid(slot, stack);
+                for (int i = 0; i < machineData.slotsCount; i++) {
+                    if (i == slot) {
+                        return i != machineData.slotsCount - 1;
                     }
-
-                    if (i != slotsCount-1){
-                        return true;
-                    }
-
-                    return false;
                 }
-
                 return super.isItemValid(slot, stack);
             }
         };
@@ -91,6 +85,7 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
         };
     }
 
+    // TODO change this
     private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
             Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemHandler, (i) -> i == 1, (i, s) -> false)),
                     Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemHandler, (index) -> index == 0,
@@ -126,6 +121,13 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
             case SOUTH -> directionWrappedHandlerMap.get(side).cast();
             case WEST -> directionWrappedHandlerMap.get(side.getCounterClockWise()).cast();
         };
+    }
+
+    @NotNull
+    @Override
+    public Component getDisplayName() {
+        // TODO localisation ( Component.translatable() )
+        return Component.literal(machineData.displayedName);
     }
 
     @Override

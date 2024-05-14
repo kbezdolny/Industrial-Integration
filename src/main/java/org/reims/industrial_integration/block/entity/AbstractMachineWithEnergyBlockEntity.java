@@ -20,8 +20,6 @@ import org.reims.industrial_integration.util.ModEnergyStorage;
 
 
 public abstract class AbstractMachineWithEnergyBlockEntity extends AbstractMachineBlockEntity {
-
-    protected static int ENERGY_REQ = 32;
     protected static int maxTransfer = 512;
 
     protected final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(machineData.energyBar.capacity, maxTransfer) {
@@ -32,8 +30,8 @@ public abstract class AbstractMachineWithEnergyBlockEntity extends AbstractMachi
         }
     };
 
-    public AbstractMachineWithEnergyBlockEntity(BlockEntityType<? extends AbstractMachineBlockEntity> pType, BlockPos pPos, BlockState pBlockState, int slotsCount) {
-        super(pType, pPos, pBlockState, slotsCount);
+    public AbstractMachineWithEnergyBlockEntity(BlockEntityType<? extends AbstractMachineBlockEntity> pType, BlockPos pPos, BlockState pBlockState) {
+        super(pType, pPos, pBlockState);
     }
 
     private LazyOptional<IEnergyStorage> lazyEnergyStorage = LazyOptional.empty();
@@ -68,14 +66,14 @@ public abstract class AbstractMachineWithEnergyBlockEntity extends AbstractMachi
 
     @Override
     protected void saveAdditional(CompoundTag nbt) {
-        nbt.putInt(machineData.UID + ".energy", ENERGY_STORAGE.getEnergyStored());
         super.saveAdditional(nbt);
+        nbt.putInt(machineData.UID + ".energy", ENERGY_STORAGE.getEnergyStored());
     }
 
     @Override
     public void load(CompoundTag nbt) {
-        ENERGY_STORAGE.setEnergy(nbt.getInt(machineData.UID + ".energy"));
         super.load(nbt);
+        ENERGY_STORAGE.setEnergy(nbt.getInt(machineData.UID + ".energy"));
     }
 
     public IEnergyStorage getEnergyStorage() {

@@ -1,7 +1,6 @@
 package org.reims.industrial_integration.block.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -25,12 +24,7 @@ public class CompressorBlockEntity extends AbstractMachineWithEnergyBlockEntity 
     private static final int outputSlotIndex = MachineInterfaces.COMPRESSOR.slots.get(1).index;
 
     public CompressorBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.COMPRESSOR.get(), pPos, pBlockState, MachineInterfaces.COMPRESSOR.slotsCount);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.literal(MachineInterfaces.COMPRESSOR.displayedName);
+        super(ModBlockEntities.COMPRESSOR.get(), pPos, pBlockState);
     }
 
     @Nullable
@@ -40,7 +34,7 @@ public class CompressorBlockEntity extends AbstractMachineWithEnergyBlockEntity 
         return new CompressorMenu(id, inventory, this, this.data);
     }
 
-    public static void tick(Level level, BlockPos blockPos, BlockState state, CompressorBlockEntity blockEntity) {
+    public static void tick(Level level, BlockPos blockPos, BlockState state, AbstractMachineBlockEntity blockEntity) {
         CompressorBlockEntity.customTick(level, blockPos, state, blockEntity, CompressorBlockEntity::craftLogic);
     }
 
