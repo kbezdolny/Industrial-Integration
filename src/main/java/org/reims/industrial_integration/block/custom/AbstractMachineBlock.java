@@ -9,6 +9,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -16,16 +17,45 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 import org.reims.industrial_integration.block.entity.AbstractMachineBlockEntity;
 
-public abstract class AbstractMachineBlock extends BaseEntityBlock {
+public abstract class AbstractMachineBlock <Entity extends AbstractMachineBlockEntity> extends BaseEntityBlock {
+    interface BlockFactory<Entity> {
+        Entity create(BlockPos pPos, BlockState pState);
+    }
+
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    private BlockFactory<Entity> blockFactory;
+    private BlockEntityTicker<Entity> tickMethod;
+    private BlockEntityType<Entity> entityType;
 
     protected AbstractMachineBlock(Properties pProperties) {
         super(pProperties);
     }
 
-    public abstract BlockEntityType<? extends AbstractMachineBlockEntity> getRegistryBlockEntityType();
+    public AbstractMachineBlock(Properties pProperties, BlockEntityType<Entity> entityType, BlockFactory<Entity> factory, BlockEntityTicker<Entity> tickMethod) {
+        this(pProperties);
+        this.entityType = entityType;
+        blockFactory = factory;
+        this.tickMethod = tickMethod;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return blockFactory.create(pPos, pState);
+    }
+
+    public BlockEntityType<Entity> getRegistryBlockEntityType() {
+        return entityType;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, getRegistryBlockEntityType(), tickMethod);
+    }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
