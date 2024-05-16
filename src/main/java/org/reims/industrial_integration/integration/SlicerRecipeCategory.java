@@ -10,12 +10,9 @@ import org.reims.industrial_integration.gui.utils.MachineSlot;
 import org.reims.industrial_integration.recipe.SlicerRecipe;
 
 public class SlicerRecipeCategory extends AbstractMachineRecipeCategory<SlicerRecipe> {
-    static {
-        machineData = MachineInterfaces.SLICER;
-    }
 
     public SlicerRecipeCategory(IGuiHelper helper) {
-        super(helper);
+        super(helper, MachineInterfaces.SLICER);
     }
 
     @Override

@@ -10,12 +10,9 @@ import org.reims.industrial_integration.gui.utils.MachineSlot;
 import org.reims.industrial_integration.recipe.CompressorRecipe;
 
 public class CompressorRecipeCategory extends AbstractMachineRecipeCategory<CompressorRecipe> {
-    static {
-        machineData = MachineInterfaces.COMPRESSOR;
-    }
 
     public CompressorRecipeCategory(IGuiHelper helper) {
-        super(helper);
+        super(helper, MachineInterfaces.COMPRESSOR);
     }
 
     @Override
