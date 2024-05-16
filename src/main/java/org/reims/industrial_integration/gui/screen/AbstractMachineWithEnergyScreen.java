@@ -7,6 +7,7 @@ import org.reims.industrial_integration.block.entity.AbstractMachineWithEnergyBl
 import org.reims.industrial_integration.gui.menu.AbstractMachineMenu;
 import org.reims.industrial_integration.gui.screen.renderer.EnergyInfoArea;
 import org.reims.industrial_integration.gui.utils.EnergyBar;
+import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
 import org.reims.industrial_integration.util.MouseUtil;
 
 import java.util.Optional;
@@ -15,8 +16,8 @@ public abstract class AbstractMachineWithEnergyScreen<Entity extends AbstractMac
         extends AbstractMachineScreen<Entity, Menu> {
     protected EnergyInfoArea energyInfoArea;
 
-    public AbstractMachineWithEnergyScreen(Menu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public AbstractMachineWithEnergyScreen(Menu pMenu, Inventory pPlayerInventory, Component pTitle, MachineInterfaceData machineData) {
+        super(pMenu, pPlayerInventory, pTitle, machineData);
     }
 
     @Override

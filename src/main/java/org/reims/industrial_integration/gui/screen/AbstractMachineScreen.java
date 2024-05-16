@@ -14,13 +14,14 @@ import org.reims.industrial_integration.gui.utils.Progressbar;
 
 public abstract class AbstractMachineScreen<Entity extends AbstractMachineBlockEntity, Menu extends AbstractMachineMenu<Entity>>
         extends AbstractContainerScreen<Menu> {
-    protected static MachineInterfaceData machineData;
+    protected final MachineInterfaceData machineData;
     private static ResourceLocation BACKGROUND;
     protected int WIDTH;
     protected int HEIGHT;
 
-    public AbstractMachineScreen(Menu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public AbstractMachineScreen(Menu pMenu, Inventory pPlayerInventory, Component pTitle, MachineInterfaceData machineData) {
         super(pMenu, pPlayerInventory, pTitle);
+        this.machineData = machineData;
         BACKGROUND = machineData.BACKGROUND;
     }
 

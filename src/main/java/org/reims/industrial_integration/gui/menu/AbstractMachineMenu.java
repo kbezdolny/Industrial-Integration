@@ -18,16 +18,14 @@ public abstract class AbstractMachineMenu<Entity extends AbstractMachineBlockEnt
     public final Entity blockEntity;
     private final Level level;
     private final ContainerData containerData;
-    public static MenuType<? extends AbstractMachineMenu> menuType;
     protected static int inventorySize;
 
-    public AbstractMachineMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
-        this(id, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(inventorySize));
+    public AbstractMachineMenu(int id, Inventory inventory, FriendlyByteBuf extraData, MenuType<? extends AbstractMachineMenu> type) {
+        this(id, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(inventorySize), type);
     }
 
-    public AbstractMachineMenu(int id, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(menuType, id);
-
+    public AbstractMachineMenu(int id, Inventory inventory, BlockEntity entity, ContainerData data, MenuType<? extends AbstractMachineMenu> type) {
+        super(type, id);
 
         blockEntity = (Entity) entity;
         this.level = inventory.player.level;

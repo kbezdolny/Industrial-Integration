@@ -21,6 +21,9 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<CompressorMenu>> COMPRESSOR_MENU =
             registerMenuType(CompressorMenu::new, MachineInterfaces.COMPRESSOR.UID + "_menu");
 
+    public static final RegistryObject<MenuType<SlicerMenu>> SLICER_MENU =
+            registerMenuType(SlicerMenu::new, MachineInterfaces.SLICER.UID + "_menu");
+
 
     public static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,
                                                                                                   String name) {

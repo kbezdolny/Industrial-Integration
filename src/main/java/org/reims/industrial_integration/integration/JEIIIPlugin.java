@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import org.reims.industrial_integration.Industrial_Integration;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 import org.reims.industrial_integration.recipe.CompressorRecipe;
+import org.reims.industrial_integration.recipe.SlicerRecipe;
 import org.reims.industrial_integration.recipe.StationRecipe;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class JEIIIPlugin implements IModPlugin {
 
     public static RecipeType<CompressorRecipe> COMPRESSOR_TYPE =
             new RecipeType<>(getUID(MachineInterfaces.COMPRESSOR.UID), CompressorRecipe.class);
+
+    public static RecipeType<SlicerRecipe> SLICER_TYPE =
+            new RecipeType<>(getUID(MachineInterfaces.SLICER.UID), SlicerRecipe.class);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -40,6 +44,9 @@ public class JEIIIPlugin implements IModPlugin {
 
         registration.addRecipeCategories(new
                 CompressorRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+
+        registration.addRecipeCategories(new
+                SlicerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -51,5 +58,8 @@ public class JEIIIPlugin implements IModPlugin {
 
         List<CompressorRecipe> compressorRecipesInfusing = rm.getAllRecipesFor(CompressorRecipe.Type.INSTANCE);
         registration.addRecipes(COMPRESSOR_TYPE, compressorRecipesInfusing);
+
+        List<SlicerRecipe> slicerRecipesInfusing = rm.getAllRecipesFor(SlicerRecipe.Type.INSTANCE);
+        registration.addRecipes(SLICER_TYPE, slicerRecipesInfusing);
     }
 }

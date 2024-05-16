@@ -18,6 +18,9 @@ public class ModRecipes {
     public static final RegistryObject<RecipeSerializer<CompressorRecipe>> COMPRESSOR_SERIALIZER =
             SERIALIZERS.register(MachineInterfaces.COMPRESSOR.UID, () -> CompressorRecipe.Serializer.INSTANCE);
 
+    public static final RegistryObject<RecipeSerializer<SlicerRecipe>> SLICER_SERIALIZER =
+            SERIALIZERS.register(MachineInterfaces.SLICER.UID, () -> SlicerRecipe.Serializer.INSTANCE);
+
     public static void register(IEventBus eventBus) {
         SERIALIZERS.register(eventBus);
     }

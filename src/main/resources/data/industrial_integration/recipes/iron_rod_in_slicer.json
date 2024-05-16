@@ -1,0 +1,14 @@
+{
+  "type": "industrial_integration:slicer",
+  "ingredients": [
+    {
+      "item": "industrial_integration:iron_plate"
+    }
+  ],
+  "output": {
+    "item": "industrial_integration:iron_rod",
+    "count": 2
+  },
+  "speed": 140,
+  "energy_req": 32
+}

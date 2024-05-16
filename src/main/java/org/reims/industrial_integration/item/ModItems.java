@@ -38,5 +38,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
     public static final RegistryObject<Item> IRON_PLATE = ITEMS.register("iron_plate",
             () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
+    public static final RegistryObject<Item> IRON_ROD = ITEMS.register("iron_rod",
+            () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
 
 }

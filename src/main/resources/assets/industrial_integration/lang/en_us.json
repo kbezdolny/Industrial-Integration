@@ -10,8 +10,10 @@
   "item.industrial_integration.transistor": "Transistor",
   "item.industrial_integration.electronic_circuit": "Electronic Circuit",
   "item.industrial_integration.iron_plate": "Iron Plate",
+  "item.industrial_integration.iron_rod": "Iron Rod",
 
   "block.industrial_integration.test_block": "Test Block",
   "block.industrial_integration.station_block": "Station Block",
-  "block.industrial_integration.compressor_block": "Compressor"
+  "block.industrial_integration.compressor_block": "Compressor",
+  "block.industrial_integration.slicer_block": "Slicer"
 }

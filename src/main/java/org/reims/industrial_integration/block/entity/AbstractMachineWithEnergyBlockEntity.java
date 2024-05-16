@@ -14,13 +14,14 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
 import org.reims.industrial_integration.networking.ModMessages;
 import org.reims.industrial_integration.networking.packet.EnergySyncS2CPacket;
 import org.reims.industrial_integration.util.ModEnergyStorage;
 
 
 public abstract class AbstractMachineWithEnergyBlockEntity extends AbstractMachineBlockEntity {
-    protected static int maxTransfer = 512;
+    protected int maxTransfer = 512;
 
     protected final ModEnergyStorage ENERGY_STORAGE = new ModEnergyStorage(machineData.energyBar.capacity, maxTransfer) {
         @Override
@@ -31,8 +32,8 @@ public abstract class AbstractMachineWithEnergyBlockEntity extends AbstractMachi
     };
 
     public AbstractMachineWithEnergyBlockEntity(BlockEntityType<? extends AbstractMachineBlockEntity> pType, BlockPos pPos, BlockState pBlockState,
-                                                MenuFactory<?  extends AbstractContainerMenu> blockFactory) {
-        super(pType, pPos, pBlockState, blockFactory);
+                                                MachineInterfaceData machineData) {
+        super(pType, pPos, pBlockState, machineData);
     }
 
     private LazyOptional<IEnergyStorage> lazyEnergyStorage = LazyOptional.empty();
@@ -40,8 +41,9 @@ public abstract class AbstractMachineWithEnergyBlockEntity extends AbstractMachi
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        super.createMenu(pContainerId, pPlayerInventory, pPlayer);
         ENERGY_STORAGE.onEnergyChanged();
-        return super.createMenu(pContainerId, pPlayerInventory, pPlayer);
+        return null;
     }
 
     @Override

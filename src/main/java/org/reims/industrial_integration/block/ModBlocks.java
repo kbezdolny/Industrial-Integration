@@ -12,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.reims.industrial_integration.Industrial_Integration;
 import org.reims.industrial_integration.block.custom.CompressorBlock;
+import org.reims.industrial_integration.block.custom.SlicerBlock;
 import org.reims.industrial_integration.block.custom.StationBlock;
 import org.reims.industrial_integration.item.ModItems;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
@@ -45,6 +46,14 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> COMPRESSOR_BLOCK = registerBlock(MachineInterfaces.COMPRESSOR.UID + "_block",
             () -> new CompressorBlock(BlockBehaviour.Properties
+                    .of(Material.METAL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)),
+            new Item.Properties().tab(Industrial_Integration.TAB));
+
+    public static final RegistryObject<Block> SLICER_BLOCK = registerBlock(MachineInterfaces.SLICER.UID + "_block",
+            () -> new SlicerBlock(BlockBehaviour.Properties
                     .of(Material.METAL)
                     .requiresCorrectToolForDrops()
                     .strength(5.0F, 6.0F)

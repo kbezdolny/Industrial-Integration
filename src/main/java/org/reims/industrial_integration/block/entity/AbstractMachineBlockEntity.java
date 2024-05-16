@@ -34,14 +34,9 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
         void accept(T t, U u, V v, I i, O o);
     }
 
-    interface MenuFactory<Menu extends AbstractContainerMenu> {
-        Menu create(int id, Inventory inventory, BlockEntity entity, ContainerData data);
-    }
+    public final MachineInterfaceData machineData;
+    protected final int defaultSpeed = 78;
 
-    public static MachineInterfaceData machineData;
-    protected static final int defaultSpeed = 78;
-
-    protected MenuFactory<?  extends AbstractContainerMenu> menuFactory;
     protected ItemStackHandler itemHandler;
     protected LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     protected final ContainerData data;
@@ -49,9 +44,10 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     protected int maxProgress = defaultSpeed;
 
     public AbstractMachineBlockEntity(BlockEntityType<? extends AbstractMachineBlockEntity> pType,
-                                      BlockPos pPos, BlockState pBlockState, MenuFactory<?  extends AbstractContainerMenu> menuFactory) {
+                                      BlockPos pPos, BlockState pBlockState,
+                                      MachineInterfaceData machineData) {
         super(pType, pPos, pBlockState);
-        this.menuFactory = menuFactory;
+        this.machineData = machineData;
         itemHandler = new ItemStackHandler(machineData.slotsCount) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -143,10 +139,10 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return menuFactory.create(pContainerId, pPlayerInventory, this.level.getBlockEntity(pPlayerInventory.player.blockPosition()), this.data);
+        return null;
     }
 
-        @Override
+    @Override
     public void onLoad() {
         super.onLoad();
         lazyItemHandler = LazyOptional.of(() -> itemHandler);

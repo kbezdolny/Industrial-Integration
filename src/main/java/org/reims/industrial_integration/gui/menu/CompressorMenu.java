@@ -9,15 +9,14 @@ import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 
 public class CompressorMenu extends AbstractMachineMenu<CompressorBlockEntity> {
     static {
-        menuType = ModMenuTypes.COMPRESSOR_MENU.get();
         inventorySize = MachineInterfaces.COMPRESSOR.slotsCount;
     }
 
     public CompressorMenu(int id, Inventory inventory, FriendlyByteBuf extraData) {
-        super(id, inventory, extraData);
+        super(id, inventory, extraData, ModMenuTypes.COMPRESSOR_MENU.get());
     }
 
     public CompressorMenu(int id, Inventory inventory, BlockEntity entity, ContainerData data) {
-        super(id, inventory, entity, data);
+        super(id, inventory, entity, data, ModMenuTypes.COMPRESSOR_MENU.get());
     }
 }

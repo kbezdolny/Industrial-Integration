@@ -3,13 +3,13 @@ package org.reims.industrial_integration.gui.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import org.reims.industrial_integration.block.entity.CompressorBlockEntity;
-import org.reims.industrial_integration.gui.menu.CompressorMenu;
+import org.reims.industrial_integration.block.entity.SlicerBlockEntity;
+import org.reims.industrial_integration.gui.menu.SlicerMenu;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 
-public class CompressorScreen extends AbstractMachineWithEnergyScreen<CompressorBlockEntity, CompressorMenu> {
-    public CompressorScreen(CompressorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle, MachineInterfaces.COMPRESSOR);
+public class SlicerScreen extends AbstractMachineWithEnergyScreen<SlicerBlockEntity, SlicerMenu> {
+    public SlicerScreen(SlicerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+        super(pMenu, pPlayerInventory, pTitle, MachineInterfaces.SLICER);
     }
 
     @Override

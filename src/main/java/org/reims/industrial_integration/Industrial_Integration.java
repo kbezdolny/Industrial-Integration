@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.reims.industrial_integration.block.ModBlocks;
 import org.reims.industrial_integration.block.entity.ModBlockEntities;
 import org.reims.industrial_integration.gui.screen.CompressorScreen;
+import org.reims.industrial_integration.gui.screen.SlicerScreen;
 import org.reims.industrial_integration.item.ModItems;
 import org.reims.industrial_integration.networking.ModMessages;
 import org.reims.industrial_integration.recipe.ModRecipes;
@@ -61,6 +62,7 @@ public class Industrial_Integration {
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(ModMenuTypes.STATION_MENU.get(), StationScreen::new);
             MenuScreens.register(ModMenuTypes.COMPRESSOR_MENU.get(), CompressorScreen::new);
+            MenuScreens.register(ModMenuTypes.SLICER_MENU.get(), SlicerScreen::new);
         }
     }
 }

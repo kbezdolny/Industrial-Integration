@@ -18,6 +18,9 @@ public class ModBlockEntities {
     public static final RegistryObject<BlockEntityType<CompressorBlockEntity>> COMPRESSOR = BLOCK_ENTITIES.register(MachineInterfaces.COMPRESSOR.UID, () ->
             BlockEntityType.Builder.of(CompressorBlockEntity::new, ModBlocks.COMPRESSOR_BLOCK.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<SlicerBlockEntity>> SLICER = BLOCK_ENTITIES.register(MachineInterfaces.SLICER.UID, () ->
+            BlockEntityType.Builder.of(SlicerBlockEntity::new, ModBlocks.SLICER_BLOCK.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }
