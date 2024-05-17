@@ -83,10 +83,11 @@ public abstract class AbstractMachineRecipe implements Recipe<SimpleContainer> {
                 outputCount = 64;
             }
         }
+        output.setCount(outputCount);
 
         int craftSpeed = 140; // Default craft speed
-        if (pSerializedRecipe.has("speed")) {
-            craftSpeed = pSerializedRecipe.getAsJsonPrimitive("speed").getAsInt();
+        if (pSerializedRecipe.has("duration")) {
+            craftSpeed = pSerializedRecipe.getAsJsonPrimitive("duration").getAsInt();
         }
 
         int energyReq = 1; // Default energy required

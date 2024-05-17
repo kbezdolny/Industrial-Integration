@@ -9,6 +9,6 @@
     "item": "industrial_integration:raw_rubber",
     "count": 1
   },
-  "speed": 200,
+  "duration": 200,
   "energy_req": 100
 }

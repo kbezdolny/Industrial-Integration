@@ -26,7 +26,7 @@ public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRec
 
     private final IDrawable background;
     private final IDrawable icon;
-    private final LoadingCache<Integer, IDrawableAnimated> cachedArrows;
+    private final LoadingCache<Integer, IDrawableAnimated> cachedProgressbar;
     private final LoadingCache<Integer, IDrawableAnimated> cachedEnergyBar;
     protected final int offset = 4;
 
@@ -35,7 +35,7 @@ public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRec
         TEXTURE = machineData.BACKGROUND;
         this.background = helper.createDrawable(TEXTURE, offset, offset, machineData.backgroundWidth-(offset*2), 85-offset);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.STATION_BLOCK.get()));
-        this.cachedArrows = CacheBuilder.newBuilder().build(new CacheLoader<>() {
+        this.cachedProgressbar = CacheBuilder.newBuilder().build(new CacheLoader<>() {
             @Override
             public IDrawableAnimated load(Integer cookTime) {
                 Progressbar progressbar = machineData.progressbar;
@@ -75,7 +75,7 @@ public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRec
     }
 
     protected IDrawableAnimated getProgressbar() {
-        return this.cachedArrows.getUnchecked(78); // 78 animation speed
+        return this.cachedProgressbar.getUnchecked(78); // 78 animation speed
     }
 
     protected IDrawableAnimated getEnergyBar() {
