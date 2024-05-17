@@ -36,9 +36,16 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
     public static final RegistryObject<Item> ELECTRONIC_CIRCUIT = ITEMS.register("electronic_circuit",
             () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
+
     public static final RegistryObject<Item> IRON_PLATE = ITEMS.register("iron_plate",
             () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
     public static final RegistryObject<Item> IRON_ROD = ITEMS.register("iron_rod",
+            () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
+    public static final RegistryObject<Item> IRON_BOLT = ITEMS.register("iron_bolt",
+            () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
+    public static final RegistryObject<Item> IRON_RING = ITEMS.register("iron_ring",
+            () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
+    public static final RegistryObject<Item> IRON_GEAR = ITEMS.register("iron_gear",
             () -> new Item(new Item.Properties().tab(Industrial_Integration.TAB)));
 
 }

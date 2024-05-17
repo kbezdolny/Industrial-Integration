@@ -9,8 +9,12 @@
   "item.industrial_integration.resistor": "Resistor",
   "item.industrial_integration.transistor": "Transistor",
   "item.industrial_integration.electronic_circuit": "Electronic Circuit",
+
   "item.industrial_integration.iron_plate": "Iron Plate",
   "item.industrial_integration.iron_rod": "Iron Rod",
+  "item.industrial_integration.iron_ring": "Iron Ring",
+  "item.industrial_integration.iron_bolt": "Iron Bolt",
+  "item.industrial_integration.iron_gear": "Iron Gear",
 
   "block.industrial_integration.test_block": "Test Block",
   "block.industrial_integration.station_block": "Station Block",
