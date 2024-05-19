@@ -13,7 +13,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import org.reims.industrial_integration.block.ModBlocks;
+import net.minecraft.world.level.block.Block;
 import org.reims.industrial_integration.gui.utils.EnergyBar;
 import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
 import org.reims.industrial_integration.gui.utils.Progressbar;
@@ -30,11 +30,11 @@ public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRec
     private final LoadingCache<Integer, IDrawableAnimated> cachedEnergyBar;
     protected final int offset = 4;
 
-    public AbstractMachineRecipeCategory(IGuiHelper helper, MachineInterfaceData machineData) {
+    public AbstractMachineRecipeCategory(IGuiHelper helper, MachineInterfaceData machineData, Block machineBlock) {
         this.machineData = machineData;
         TEXTURE = machineData.BACKGROUND;
         this.background = helper.createDrawable(TEXTURE, offset, offset, machineData.backgroundWidth-(offset*2), 85-offset);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.STATION_BLOCK.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(machineBlock));
         this.cachedProgressbar = CacheBuilder.newBuilder().build(new CacheLoader<>() {
             @Override
             public IDrawableAnimated load(Integer cookTime) {

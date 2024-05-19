@@ -5,6 +5,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import org.reims.industrial_integration.block.ModBlocks;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 import org.reims.industrial_integration.gui.utils.MachineSlot;
 import org.reims.industrial_integration.recipe.CompressorRecipe;
@@ -12,7 +13,7 @@ import org.reims.industrial_integration.recipe.CompressorRecipe;
 public class CompressorRecipeCategory extends AbstractMachineRecipeCategory<CompressorRecipe> {
 
     public CompressorRecipeCategory(IGuiHelper helper) {
-        super(helper, MachineInterfaces.COMPRESSOR);
+        super(helper, MachineInterfaces.COMPRESSOR, ModBlocks.COMPRESSOR_BLOCK.get());
     }
 
     @Override

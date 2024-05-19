@@ -5,6 +5,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import org.reims.industrial_integration.block.ModBlocks;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 import org.reims.industrial_integration.gui.utils.MachineSlot;
 import org.reims.industrial_integration.recipe.SlicerRecipe;
@@ -12,7 +13,7 @@ import org.reims.industrial_integration.recipe.SlicerRecipe;
 public class SlicerRecipeCategory extends AbstractMachineRecipeCategory<SlicerRecipe> {
 
     public SlicerRecipeCategory(IGuiHelper helper) {
-        super(helper, MachineInterfaces.SLICER);
+        super(helper, MachineInterfaces.SLICER, ModBlocks.SLICER_BLOCK.get());
     }
 
     @Override
