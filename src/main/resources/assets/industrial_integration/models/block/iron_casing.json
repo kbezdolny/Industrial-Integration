@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "industrial_integration:block/iron_casing",
+    "up": "industrial_integration:block/iron_casing",
+    "north": "industrial_integration:block/iron_casing",
+    "east": "industrial_integration:block/iron_casing",
+    "south": "industrial_integration:block/iron_casing",
+    "west": "industrial_integration:block/iron_casing",
+    "particle": "industrial_integration:block/iron_casing"
+  }
+}

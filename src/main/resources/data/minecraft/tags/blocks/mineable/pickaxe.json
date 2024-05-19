@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "industrial_integration:test_block",
+    "industrial_integration:iron_casing",
     "industrial_integration:station_block",
     "industrial_integration:compressor_block",
     "industrial_integration:slicer_block"

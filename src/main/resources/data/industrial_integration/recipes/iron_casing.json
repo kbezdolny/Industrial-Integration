@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "AAA",
+    "BCB",
+    "ADA"
+  ],
+  "key": {
+    "A": {
+      "item": "industrial_integration:iron_plate"
+    },
+    "B": {
+      "item": "industrial_integration:iron_rod"
+    },
+    "C": {
+      "item": "industrial_integration:iron_gear"
+    },
+    "D": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "item": "industrial_integration:iron_casing",
+    "count": 1
+  }
+}

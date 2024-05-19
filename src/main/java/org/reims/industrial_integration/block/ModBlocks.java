@@ -34,7 +34,15 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(5.0F, 6.0F)
                     .sound(SoundType.METAL)),
-            new Item.Properties().tab(Industrial_Integration.TAB));
+            new Item.Properties().tab(Industrial_Integration.MATERIALS_TAB));
+
+    public static final RegistryObject<Block> IRON_CASING = registerBlock("iron_casing",
+            () -> new Block(BlockBehaviour.Properties
+                    .of(Material.METAL)
+                    .requiresCorrectToolForDrops()
+                    .strength(5.0F, 6.0F)
+                    .sound(SoundType.METAL)),
+            new Item.Properties().tab(Industrial_Integration.MACHINES_TAB));
 
     public static final RegistryObject<Block> STATION_BLOCK = registerBlock("station_block",
             () -> new StationBlock(BlockBehaviour.Properties
@@ -42,7 +50,7 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(5.0F, 6.0F)
                     .sound(SoundType.METAL)),
-            new Item.Properties().tab(Industrial_Integration.TAB));
+            new Item.Properties().tab(Industrial_Integration.MACHINES_TAB));
 
     public static final RegistryObject<Block> COMPRESSOR_BLOCK = registerBlock(MachineInterfaces.COMPRESSOR.UID + "_block",
             () -> new CompressorBlock(BlockBehaviour.Properties
@@ -50,7 +58,7 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(5.0F, 6.0F)
                     .sound(SoundType.METAL)),
-            new Item.Properties().tab(Industrial_Integration.TAB));
+            new Item.Properties().tab(Industrial_Integration.MACHINES_TAB));
 
     public static final RegistryObject<Block> SLICER_BLOCK = registerBlock(MachineInterfaces.SLICER.UID + "_block",
             () -> new SlicerBlock(BlockBehaviour.Properties
@@ -58,7 +66,7 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(5.0F, 6.0F)
                     .sound(SoundType.METAL)),
-            new Item.Properties().tab(Industrial_Integration.TAB));
+            new Item.Properties().tab(Industrial_Integration.MACHINES_TAB));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> supplier, Item.Properties properties) {
         RegistryObject<T> block = BLOCKS.register(name, supplier);

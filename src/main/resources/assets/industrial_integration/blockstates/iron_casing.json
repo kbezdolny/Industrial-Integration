@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "industrial_integration:block/iron_casing"
+    }
+  }
+}
