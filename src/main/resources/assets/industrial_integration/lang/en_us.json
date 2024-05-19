@@ -1,5 +1,7 @@
 {
-  "itemGroup.industrial_integration": "Industrial Integration",
+  "itemGroup.industrial_integration": "II: Resources",
+  "itemGroup.industrial_integration.machines": "II: Machines",
+
   "item.industrial_integration.incomplete_raw_rubber": "Incomplete Raw Rubber",
   "item.industrial_integration.raw_rubber": "Raw Rubber",
   "item.industrial_integration.sawdust": "Sawdust",
@@ -17,6 +19,7 @@
   "item.industrial_integration.iron_gear": "Iron Gear",
 
   "block.industrial_integration.test_block": "Test Block",
+  "block.industrial_integration.iron_casing": "Iron Casing",
   "block.industrial_integration.station_block": "Station Block",
   "block.industrial_integration.compressor_block": "Compressor",
   "block.industrial_integration.slicer_block": "Slicer"

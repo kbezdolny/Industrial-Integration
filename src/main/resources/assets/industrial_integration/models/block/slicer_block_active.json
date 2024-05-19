@@ -3,7 +3,7 @@
   "textures": {
     "down": "industrial_integration:block/machine_bottom",
     "up": "industrial_integration:block/machine_top",
-    "north": "industrial_integration:block/compressor_front",
+    "north": "industrial_integration:block/slicer_front_active",
     "east": "industrial_integration:block/machine_horizontal",
     "south": "industrial_integration:block/machine_horizontal",
     "west": "industrial_integration:block/machine_horizontal",

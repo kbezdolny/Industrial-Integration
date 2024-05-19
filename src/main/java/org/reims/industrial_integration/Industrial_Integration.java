@@ -49,10 +49,17 @@ public class Industrial_Integration {
         ModMessages.register();
     }
 
-    public static final CreativeModeTab TAB = new CreativeModeTab(MODID) {
+    public static final CreativeModeTab MATERIALS_TAB = new CreativeModeTab(MODID) {
         @Override
         public @NotNull ItemStack makeIcon() {
-            return new ItemStack(ModItems.SAWDUST.get());
+            return new ItemStack(ModItems.IRON_GEAR.get());
+        }
+    };
+
+    public static final CreativeModeTab MACHINES_TAB = new CreativeModeTab(MODID+".machines") {
+        @Override
+        public @NotNull ItemStack makeIcon() {
+            return new ItemStack(ModBlocks.SLICER_BLOCK.get());
         }
     };
 

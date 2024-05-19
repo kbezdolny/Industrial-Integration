@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "down": "industrial_integration:block/station_block",
-    "up": "industrial_integration:block/test_block",
-    "north": "industrial_integration:block/test_block",
-    "east": "industrial_integration:block/station_block",
-    "south": "industrial_integration:block/station_block",
-    "west": "industrial_integration:block/station_block",
-    "particle": "industrial_integration:block/station_block"
+    "down": "industrial_integration:block/machine_bottom",
+    "up": "industrial_integration:block/machine_top",
+    "north": "industrial_integration:block/slicer_front",
+    "east": "industrial_integration:block/machine_horizontal",
+    "south": "industrial_integration:block/machine_horizontal",
+    "west": "industrial_integration:block/machine_horizontal",
+    "particle": "industrial_integration:block/machine_horizontal"
   }
 }

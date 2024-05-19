@@ -1,6 +1,7 @@
 package org.reims.industrial_integration.block.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
@@ -26,11 +28,13 @@ public abstract class AbstractMachineBlock<Entity extends AbstractMachineBlockEn
     }
 
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty CRAFTING = BooleanProperty.create("crafting");
     private BlockFactory<Entity> blockFactory;
 
     protected AbstractMachineBlock(Properties pProperties, BlockFactory<Entity> blockFactory) {
         super(pProperties);
         this.blockFactory = blockFactory;
+        this.registerDefaultState(this.stateDefinition.any().setValue(CRAFTING, Boolean.valueOf(false)));
     }
 
     public abstract  <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type);
@@ -58,7 +62,7 @@ public abstract class AbstractMachineBlock<Entity extends AbstractMachineBlockEn
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, CRAFTING);
     }
 
     @Override

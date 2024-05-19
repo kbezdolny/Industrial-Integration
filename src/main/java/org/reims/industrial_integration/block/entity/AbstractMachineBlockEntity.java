@@ -13,6 +13,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +24,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.reims.industrial_integration.block.custom.AbstractMachineBlock;
 import org.reims.industrial_integration.block.custom.StationBlock;
 import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
 
@@ -181,6 +183,10 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
         this.progress = 0;
     }
 
+    protected boolean isCrafting() {
+        return this.progress > 0;
+    }
+
     protected static SimpleContainer getInventory(AbstractMachineBlockEntity blockEntity) {
         SimpleContainer inventory = new SimpleContainer(blockEntity.itemHandler.getSlots());
         for (int i = 0; i < inventory.getContainerSize(); i++) {
@@ -205,7 +211,15 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
             return;
         }
 
+        boolean flag = blockEntity.isCrafting();
+
         SimpleContainer inventory = getInventory(blockEntity);
         craftLogic.accept(level, blockPos, state, blockEntity, inventory);
+
+        if (flag != blockEntity.isCrafting()) {
+            state = state.setValue(AbstractMachineBlock.CRAFTING, blockEntity.isCrafting());
+            level.setBlock(blockPos, state, 2);
+            setChanged(level, blockPos, state);
+        }
     }
 }

@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
+    "facing=north,crafting=false": {
       "model": "industrial_integration:block/slicer_block"
     },
-    "facing=east": {
+    "facing=east,crafting=false": {
       "model": "industrial_integration:block/slicer_block",
       "y": 90
     },
-    "facing=south": {
+    "facing=south,crafting=false": {
       "model": "industrial_integration:block/slicer_block",
       "y": 180
     },
-    "facing=west": {
+    "facing=west,crafting=false": {
       "model": "industrial_integration:block/slicer_block",
+      "y": 270
+    },
+    "facing=north,crafting=true": {
+      "model": "industrial_integration:block/slicer_block_active"
+    },
+    "facing=east,crafting=true": {
+      "model": "industrial_integration:block/slicer_block_active",
+      "y": 90
+    },
+    "facing=south,crafting=true": {
+      "model": "industrial_integration:block/slicer_block_active",
+      "y": 180
+    },
+    "facing=west,crafting=true": {
+      "model": "industrial_integration:block/slicer_block_active",
       "y": 270
     }
   }
