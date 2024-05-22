@@ -5,10 +5,13 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import org.reims.industrial_integration.gui.utils.EnergyBar;
 import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
+import org.reims.industrial_integration.gui.utils.MachineSlot;
 import org.reims.industrial_integration.gui.utils.Progressbar;
 import org.reims.industrial_integration.recipe.AbstractMachineRecipe;
 
@@ -80,6 +84,23 @@ public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRec
 
     protected IDrawableAnimated getEnergyBar() {
         return this.cachedEnergyBar.getUnchecked(240); // 240 animation speed
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder builder, R recipe, IFocusGroup iFocusGroup) {
+        for (int i = 0; i < machineData.slots.toArray().length; i++) {
+            MachineSlot slot = machineData.slots.get(i);
+            switch (slot.type) {
+                case INPUT:
+                    builder.addSlot(RecipeIngredientRole.INPUT, slot.posX-offset, slot.posY-offset)
+                            .addIngredients(recipe.getIngredients().get(slot.index));
+                    break;
+                case OUTPUT:
+                    builder.addSlot(RecipeIngredientRole.OUTPUT, slot.posX-offset, slot.posY-offset)
+                            .addItemStack(recipe.getResultItem());
+                    break;
+            }
+        }
     }
 
     @Override
