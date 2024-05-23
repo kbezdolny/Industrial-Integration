@@ -12,6 +12,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +28,7 @@ import org.reims.industrial_integration.recipe.AbstractMachineRecipe;
 public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRecipe> implements IRecipeCategory<R> {
     public final MachineInterfaceData machineData;
     private final ResourceLocation TEXTURE;
+    private final RecipeType<R> recipeType;
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -34,9 +36,11 @@ public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRec
     private final LoadingCache<Integer, IDrawableAnimated> cachedEnergyBar;
     protected final int offset = 4;
 
-    public AbstractMachineRecipeCategory(IGuiHelper helper, MachineInterfaceData machineData, Block machineBlock) {
+
+    public AbstractMachineRecipeCategory(IGuiHelper helper, MachineInterfaceData machineData, RecipeType<R> recipeType, Block machineBlock) {
         this.machineData = machineData;
         TEXTURE = machineData.BACKGROUND;
+        this.recipeType = recipeType;
         this.background = helper.createDrawable(TEXTURE, offset, offset, machineData.backgroundWidth-(offset*2), 85-offset);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(machineBlock));
         this.cachedProgressbar = CacheBuilder.newBuilder().build(new CacheLoader<>() {
@@ -76,6 +80,11 @@ public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRec
     @Override
     public IDrawable getIcon() {
         return this.icon;
+    }
+
+    @Override
+    public RecipeType<R> getRecipeType() {
+        return recipeType;
     }
 
     protected IDrawableAnimated getProgressbar() {
