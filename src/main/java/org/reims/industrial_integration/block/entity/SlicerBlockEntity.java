@@ -35,8 +35,8 @@ public class SlicerBlockEntity extends AbstractMachineWithEnergyBlockEntity {
                                    SimpleContainer inventory) {
         SlicerBlockEntity blockEntity = (SlicerBlockEntity) abstractEntity;
         Optional<SlicerRecipe> recipe = getRecipe(level, inventory);
-        
-        if (hasRecipe(inventory, recipe)) {
+
+        if (hasRecipe(inventory, recipe, MachineInterfaces.SLICER)) {
             if (!hasEnoughEnergy(blockEntity, recipe.get().getEnergyReq())) {
                 return;
             }
@@ -52,7 +52,7 @@ public class SlicerBlockEntity extends AbstractMachineWithEnergyBlockEntity {
             setChanged(level, blockPos, state);
 
             if (blockEntity.progress >= blockEntity.maxProgress) {
-                craftItem(blockEntity, inventory, recipe);
+                craftItem(blockEntity, inventory, recipe, MachineInterfaces.SLICER);
             }
         } else {
             blockEntity.resetProgress();
@@ -60,24 +60,7 @@ public class SlicerBlockEntity extends AbstractMachineWithEnergyBlockEntity {
         }
     }
 
-    private static void craftItem(SlicerBlockEntity blockEntity, SimpleContainer inventory, Optional<SlicerRecipe> recipe) {
-        if (hasRecipe(inventory, recipe)) {
-            // TODO Take custom input item count
-            blockEntity.itemHandler.extractItem(MachineInterfaces.SLICER.slots.get(0).index, 1, false);
-            blockEntity.itemHandler.setStackInSlot(MachineInterfaces.SLICER.slots.get(1).index, new ItemStack(recipe.get().getResultItem().getItem(),
-                    blockEntity.itemHandler.getStackInSlot(MachineInterfaces.SLICER.slots.get(1).index).getCount() + recipe.get().getOutputCount()));
-
-            blockEntity.resetProgress();
-        }
-    }
-
     private static Optional<SlicerRecipe> getRecipe(Level level, SimpleContainer inventory) {
         return level.getRecipeManager().getRecipeFor(SlicerRecipe.Type.INSTANCE, inventory, level);
-    }
-
-    private static boolean hasRecipe(SimpleContainer inventory, Optional<? extends AbstractMachineRecipe> recipe) {
-        int outputSlot = MachineInterfaces.SLICER.slots.get(1).index;
-        return recipe.isPresent() && canInsertAmountIntoOutputSlot(inventory, outputSlot)
-                && canInsertItemIntoOutputSlot(inventory, recipe.get().getResultItem(), outputSlot);
     }
 }

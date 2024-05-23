@@ -10,7 +10,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.reims.industrial_integration.gui.menu.CompressorMenu;
-import org.reims.industrial_integration.recipe.AbstractMachineRecipe;
+import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
+import org.reims.industrial_integration.gui.utils.MachineSlot;
 import org.reims.industrial_integration.recipe.CompressorRecipe;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 
@@ -36,7 +37,7 @@ public class CompressorBlockEntity extends AbstractMachineWithEnergyBlockEntity 
         CompressorBlockEntity blockEntity = (CompressorBlockEntity) abstractEntity;
         Optional<CompressorRecipe> recipe = getRecipe(level, inventory);
 
-        if (hasRecipe(inventory, recipe)) {
+        if (hasRecipe(inventory, recipe, MachineInterfaces.COMPRESSOR)) {
             if (!hasEnoughEnergy(blockEntity, recipe.get().getEnergyReq())) {
                 return;
             }
@@ -52,7 +53,7 @@ public class CompressorBlockEntity extends AbstractMachineWithEnergyBlockEntity 
             setChanged(level, blockPos, state);
 
             if (blockEntity.progress >= blockEntity.maxProgress) {
-                craftItem(blockEntity, inventory, recipe);
+                craftItem(blockEntity, inventory, recipe, MachineInterfaces.COMPRESSOR);
             }
         } else {
             blockEntity.resetProgress();
@@ -60,24 +61,7 @@ public class CompressorBlockEntity extends AbstractMachineWithEnergyBlockEntity 
         }
     }
 
-    private static void craftItem(CompressorBlockEntity blockEntity, SimpleContainer inventory, Optional<CompressorRecipe> recipe) {
-        if (hasRecipe(inventory, recipe)) {
-            // TODO Take custom input item count
-            blockEntity.itemHandler.extractItem(MachineInterfaces.COMPRESSOR.slots.get(0).index, 1, false);
-            blockEntity.itemHandler.setStackInSlot(MachineInterfaces.COMPRESSOR.slots.get(1).index, new ItemStack(recipe.get().getResultItem().getItem(),
-                    blockEntity.itemHandler.getStackInSlot(MachineInterfaces.COMPRESSOR.slots.get(1).index).getCount() + recipe.get().getOutputCount()));
-
-            blockEntity.resetProgress();
-        }
-    }
-
     private static Optional<CompressorRecipe> getRecipe(Level level, SimpleContainer inventory) {
         return level.getRecipeManager().getRecipeFor(CompressorRecipe.Type.INSTANCE, inventory, level);
-    }
-
-    private static boolean hasRecipe(SimpleContainer inventory, Optional<? extends AbstractMachineRecipe> recipe) {
-        int outputSlot = MachineInterfaces.COMPRESSOR.slots.get(1).index;
-        return recipe.isPresent() && canInsertAmountIntoOutputSlot(inventory, outputSlot)
-                && canInsertItemIntoOutputSlot(inventory, recipe.get().getResultItem(), outputSlot);
     }
 }
