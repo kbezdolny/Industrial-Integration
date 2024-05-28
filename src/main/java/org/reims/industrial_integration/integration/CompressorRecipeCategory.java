@@ -1,7 +1,7 @@
 package org.reims.industrial_integration.integration;
 
 import mezz.jei.api.helpers.IGuiHelper;
-import org.reims.industrial_integration.block.ModBlocks;
+import org.reims.industrial_integration.block.custom.ModBlocks;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 import org.reims.industrial_integration.recipe.CompressorRecipe;
 

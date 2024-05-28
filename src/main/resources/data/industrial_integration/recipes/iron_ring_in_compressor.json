@@ -2,13 +2,16 @@
   "type": "industrial_integration:compressor",
   "ingredients": [
     {
-      "item": "industrial_integration:iron_rod"
+      "item": "industrial_integration:iron_rod",
+      "count": 1
     }
   ],
-  "output": {
-    "item": "industrial_integration:iron_ring",
-    "amount": 1
-  },
+  "output": [
+    {
+      "item": "industrial_integration:iron_ring",
+      "count": 1
+    }
+  ],
   "duration": 140,
   "energy_req": 16
 }

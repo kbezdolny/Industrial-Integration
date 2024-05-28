@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.reims.industrial_integration.Industrial_Integration;
-import org.reims.industrial_integration.block.ModBlocks;
+import org.reims.industrial_integration.block.custom.ModBlocks;
 import org.reims.industrial_integration.gui.screen.CompressorScreen;
 import org.reims.industrial_integration.gui.screen.SlicerScreen;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;

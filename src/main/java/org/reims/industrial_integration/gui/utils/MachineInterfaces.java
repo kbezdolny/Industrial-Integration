@@ -7,10 +7,11 @@ public class MachineInterfaces {
             new MachineInterfaceData("compressor", "Compressor",
                     "textures/gui/compressor_gui.png", 176, 166,
                     new Progressbar(176, 0, 69, 38, 20, 13, Progressbar.AnimationDirection.Right),
-                    2, new ArrayList<>() {{
-                        add(new MachineSlot(0, 44, 36, MachineSlot.SlotType.INPUT));
-                        add(new MachineSlot(1, 98, 36, MachineSlot.SlotType.OUTPUT));
-                    }},
+                    3, new ArrayList<>() {{
+                add(new MachineSlot(0, 44, 36, MachineSlot.SlotType.INPUT));
+                add(new MachineSlot(1, 98, 36, MachineSlot.SlotType.OUTPUT));
+                add(new MachineSlot(2, 116, 36, MachineSlot.SlotType.OUTPUT));
+            }},
                     new EnergyBar(243, 0, 145, 20, 13, 48, 16000)
             );
 
@@ -18,9 +19,11 @@ public class MachineInterfaces {
             new MachineInterfaceData("slicer", "Slicer",
                     "textures/gui/slicer_gui.png", 176, 166,
                     new Progressbar(176, 0, 69, 39, 19, 11, Progressbar.AnimationDirection.Right),
-                    2, new ArrayList<>() {{
+                    4, new ArrayList<>() {{
                 add(new MachineSlot(0, 44, 36, MachineSlot.SlotType.INPUT));
                 add(new MachineSlot(1, 98, 36, MachineSlot.SlotType.OUTPUT));
+                add(new MachineSlot(2, 116, 36, MachineSlot.SlotType.OUTPUT));
+                add(new MachineSlot(3, 133, 36, MachineSlot.SlotType.OUTPUT));
             }},
                     new EnergyBar(243, 0, 145, 20, 13, 48, 10000)
             );

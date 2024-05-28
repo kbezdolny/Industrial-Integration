@@ -5,13 +5,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import org.reims.industrial_integration.gui.menu.CompressorMenu;
-import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
-import org.reims.industrial_integration.gui.utils.MachineSlot;
 import org.reims.industrial_integration.recipe.CompressorRecipe;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 
@@ -42,7 +39,7 @@ public class CompressorBlockEntity extends AbstractMachineWithEnergyBlockEntity 
                 return;
             }
 
-            int craftSpeed = recipe.get().getCraftSpeed();
+            int craftSpeed = recipe.get().getCraftDuration();
             if (blockEntity.maxProgress != craftSpeed){
                 blockEntity.maxProgress = craftSpeed;
                 blockEntity.resetProgress();

@@ -1,32 +1,18 @@
 package org.reims.industrial_integration.recipe;
 
 import com.google.gson.JsonObject;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
 import org.reims.industrial_integration.Industrial_Integration;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
+import org.reims.industrial_integration.util.RecipeDto;
 
 import javax.annotation.Nullable;
 
 public class CompressorRecipe extends AbstractMachineRecipe {
-    private final int inputSlotIndex = MachineInterfaces.COMPRESSOR.slots.get(0).index;
-
-    public CompressorRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int outputCount, int craftSpeed, int energyReq) {
-        super(id, output, recipeItems, outputCount, craftSpeed, energyReq);
-    }
-
-    @Override
-    public boolean matches(SimpleContainer simpleContainer, Level level) {
-        if (level.isClientSide()) {
-            return false;
-        }
-
-        return recipeItems.get(inputSlotIndex).test(simpleContainer.getItem(inputSlotIndex));
+    public CompressorRecipe(ResourceLocation id, RecipeDto recipeDto) {
+        super(id, recipeDto, MachineInterfaces.COMPRESSOR);
     }
 
     @Override
@@ -63,7 +49,7 @@ public class CompressorRecipe extends AbstractMachineRecipe {
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, CompressorRecipe recipe) {
-            CompressorRecipe.toNetwork(buf, recipe);
+            recipe.toNetwork(buf, recipe);
         }
     }
 }

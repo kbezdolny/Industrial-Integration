@@ -9,38 +9,57 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.level.Level;
+import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
+import org.reims.industrial_integration.gui.utils.MachineSlot;
+import org.reims.industrial_integration.util.RecipeDto;
 
 import javax.annotation.Nullable;
 
 public abstract class AbstractMachineRecipe implements Recipe<SimpleContainer> {
     interface RecipeFactory<R extends AbstractMachineRecipe> {
-        R create(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int outputCount, int craftSpeed, int energyReq);
+        R create(ResourceLocation id, RecipeDto recipeDto);
     }
 
+    protected final MachineInterfaceData machineData;
     protected final ResourceLocation id;
-    protected final ItemStack output;
-    protected final int outputCount;
-    protected final NonNullList<Ingredient> recipeItems;
-    protected final int craftSpeed;
+    protected final int craftDuration;
     protected final int energyReq;
+    protected NonNullList<RecipeDto.ItemInterface> recipeItems;
+    protected NonNullList<RecipeDto.ItemInterface> resultItems;
 
-    public AbstractMachineRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, int outputCount, int craftSpeed, int energyReq) {
+    public AbstractMachineRecipe(ResourceLocation id, RecipeDto recipeDto, MachineInterfaceData machineData) {
+        this.machineData = machineData;
         this.id = id;
-        this.output = output;
-        this.recipeItems = recipeItems;
-        this.outputCount = outputCount;
-        this.craftSpeed = craftSpeed;
-        this.energyReq = energyReq;
+        this.recipeItems = recipeDto.recipeItems;
+        this.resultItems = recipeDto.resultItems;
+        this.craftDuration = recipeDto.craftDuration;
+        this.energyReq = recipeDto.energyReq;
     }
 
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
+    public NonNullList<RecipeDto.ItemInterface> getRecipeItems() {
         return recipeItems;
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer simpleContainer) {
-        return output;
+    public boolean matches(SimpleContainer simpleContainer, Level level) {
+        if (level.isClientSide()) {
+            return false;
+        }
+
+        var slots = machineData.slots;
+        for (int i = 0; i < slots.toArray().length; i++) {
+            MachineSlot slot = slots.get(i);
+            if (slot.type != MachineSlot.SlotType.INPUT) {
+                continue;
+            }
+
+            if (!recipeItems.get(slot.index).itemIngredient.test(simpleContainer.getItem(slot.index))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -49,16 +68,21 @@ public abstract class AbstractMachineRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
+    public ItemStack assemble(SimpleContainer pContainer) {
+        return null;
+    }
+
+    @Override
     public ItemStack getResultItem() {
-        return output.copy();
+        return null;
     }
 
-    public int getOutputCount() {
-        return outputCount;
+    public NonNullList<RecipeDto.ItemInterface> getResultItems() {
+        return resultItems;
     }
 
-    public int getCraftSpeed() {
-        return craftSpeed;
+    public int getCraftDuration() {
+        return craftDuration;
     }
 
     public int getEnergyReq() {
@@ -71,63 +95,55 @@ public abstract class AbstractMachineRecipe implements Recipe<SimpleContainer> {
     }
 
     public static <R extends AbstractMachineRecipe> R fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe, RecipeFactory<R> factory) {
-        JsonObject outputJson = GsonHelper.getAsJsonObject(pSerializedRecipe, "output");
-        ItemStack output = ShapedRecipe.itemStackFromJson(outputJson);
+        JsonArray ingredients = GsonHelper.getAsJsonArray(pSerializedRecipe, "ingredients");
+        NonNullList<RecipeDto.ItemInterface> recipeItems = NonNullList.withSize(ingredients.size(), new RecipeDto.ItemInterface());
 
-        int outputCount = 1;
-        if (outputJson.has("count")) {
-            outputCount = outputJson.getAsJsonPrimitive("count").getAsInt();
-            if (outputCount < 1) {
-                outputCount = 1;
-            } else if (outputCount > 64) {
-                outputCount = 64;
-            }
+        for (int i = 0; i < recipeItems.size(); i++) {
+            int itemCount = getValidItemCount((JsonObject) ingredients.get(i));
+            recipeItems.set(i, new RecipeDto.ItemInterface(Ingredient.fromJson(ingredients.get(i)), itemCount));
         }
-        output.setCount(outputCount);
 
-        int craftSpeed = 140; // Default craft speed
+        JsonArray outputs = GsonHelper.getAsJsonArray(pSerializedRecipe, "output");
+        NonNullList<RecipeDto.ItemInterface> resultItems = NonNullList.withSize(outputs.size(), new RecipeDto.ItemInterface());
+
+        for (int i = 0; i < resultItems.size(); i++) {
+            ItemStack output = ShapedRecipe.itemStackFromJson((JsonObject) outputs.get(i));
+            resultItems.set(i, new RecipeDto.ItemInterface(output));
+        }
+
+        int craftDuration = 140; // Default craft speed
         if (pSerializedRecipe.has("duration")) {
-            craftSpeed = pSerializedRecipe.getAsJsonPrimitive("duration").getAsInt();
+            craftDuration = pSerializedRecipe.getAsJsonPrimitive("duration").getAsInt();
         }
 
-        int energyReq = 1; // Default energy required
+        int energyReq = 0; // Default energy required
         if (pSerializedRecipe.has("energy_req")) {
             energyReq = pSerializedRecipe.getAsJsonPrimitive("energy_req").getAsInt();
         }
 
-        JsonArray ingredients = GsonHelper.getAsJsonArray(pSerializedRecipe, "ingredients");
-        NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
+        RecipeDto recipeDto = new RecipeDto(recipeItems, resultItems, craftDuration, energyReq);
+        return factory.create(pRecipeId, recipeDto);
+    }
 
-        for (int i = 0; i < inputs.size(); i++) {
-            inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
+    private static int getValidItemCount(JsonObject jsonObject) {
+        int itemCount = 1;
+        if (jsonObject.has("count")) {
+            itemCount = GsonHelper.getAsInt(jsonObject, "count");
+            if (itemCount < 1) {
+                itemCount = 1;
+            } else if (itemCount > 64) {
+                itemCount = 64;
+            }
         }
-
-        return factory.create(pRecipeId, output, inputs, outputCount, craftSpeed, energyReq);
+        return itemCount;
     }
 
     public static @Nullable <R extends AbstractMachineRecipe> R fromNetwork(ResourceLocation id, FriendlyByteBuf buf, RecipeFactory<R> factory) {
-        NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
-
-        for (int i = 0; i < inputs.size(); i++) {
-            inputs.set(i, Ingredient.fromNetwork(buf));
-        }
-
-        ItemStack output = buf.readItem();
-        int outputCount = buf.readInt();
-        int craftSpeed = buf.readInt();
-        int energyReq = buf.readInt();
-        return factory.create(id, output, inputs, outputCount, craftSpeed, energyReq);
+        return factory.create(id, RecipeDto.readRecipeDto(buf));
     }
 
-    public static void toNetwork(FriendlyByteBuf buf, AbstractMachineRecipe recipe) {
-        buf.writeInt(recipe.getIngredients().size());
-
-        for (Ingredient ing : recipe.getIngredients()) {
-            ing.toNetwork(buf);
-        }
-        buf.writeItemStack(recipe.getResultItem(), false);
-        buf.writeInt(recipe.getOutputCount());
-        buf.writeInt(recipe.getCraftSpeed());
-        buf.writeInt(recipe.getEnergyReq());
+    public void toNetwork(FriendlyByteBuf buf, AbstractMachineRecipe recipe) {
+        RecipeDto recipeDto = new RecipeDto(recipeItems, resultItems, craftDuration, energyReq);
+        recipeDto.writeRecipeDto(buf);
     }
 }

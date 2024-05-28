@@ -1,4 +1,4 @@
-package org.reims.industrial_integration.block;
+package org.reims.industrial_integration.block.custom;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -11,9 +11,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.reims.industrial_integration.Industrial_Integration;
-import org.reims.industrial_integration.block.custom.CompressorBlock;
-import org.reims.industrial_integration.block.custom.SlicerBlock;
-import org.reims.industrial_integration.block.custom.StationBlock;
 import org.reims.industrial_integration.item.ModItems;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 

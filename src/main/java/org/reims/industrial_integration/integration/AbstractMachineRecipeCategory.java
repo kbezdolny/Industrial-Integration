@@ -97,16 +97,28 @@ public abstract class AbstractMachineRecipeCategory<R extends AbstractMachineRec
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, R recipe, IFocusGroup iFocusGroup) {
-        for (int i = 0; i < machineData.slots.toArray().length; i++) {
+        int inputsCount = 0;
+        for (int i = 0; i < machineData.slots.size(); i++) {
             MachineSlot slot = machineData.slots.get(i);
             switch (slot.type) {
                 case INPUT:
+                    if (recipe.getRecipeItems() == null) {
+                        break;
+                    }
+
                     builder.addSlot(RecipeIngredientRole.INPUT, slot.posX-offset, slot.posY-offset)
-                            .addIngredients(recipe.getIngredients().get(slot.index));
+                            .addItemStack(recipe.getRecipeItems().get(slot.index).itemStack);
+                    inputsCount++;
                     break;
                 case OUTPUT:
+                    int index = i-inputsCount;
+
+                    if (recipe.getResultItems() == null || recipe.getResultItems().size() <= index) {
+                        break;
+                    }
+
                     builder.addSlot(RecipeIngredientRole.OUTPUT, slot.posX-offset, slot.posY-offset)
-                            .addItemStack(recipe.getResultItem());
+                            .addItemStack(recipe.getResultItems().get(index).itemStack);
                     break;
             }
         }

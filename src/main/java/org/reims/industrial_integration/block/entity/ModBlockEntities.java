@@ -5,7 +5,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.reims.industrial_integration.block.ModBlocks;
+import org.reims.industrial_integration.block.custom.ModBlocks;
 import org.reims.industrial_integration.Industrial_Integration;
 import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 

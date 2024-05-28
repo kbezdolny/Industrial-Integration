@@ -11,27 +11,27 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.items.SlotItemHandler;
 import org.reims.industrial_integration.block.entity.AbstractMachineBlockEntity;
 import org.reims.industrial_integration.gui.utils.MachineInterfaceData;
-import org.reims.industrial_integration.gui.utils.MachineInterfaces;
 import org.reims.industrial_integration.gui.utils.MachineSlot;
 
 public abstract class AbstractMachineMenu<Entity extends AbstractMachineBlockEntity> extends AbstractContainerMenu {
     public final Entity blockEntity;
     private final Level level;
+    private final MachineInterfaceData machineData;
     private final ContainerData containerData;
-    protected static int inventorySize;
 
-    public AbstractMachineMenu(int id, Inventory inventory, FriendlyByteBuf extraData, MenuType<? extends AbstractMachineMenu> type) {
-        this(id, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(inventorySize), type);
+    public AbstractMachineMenu(int id, Inventory inventory, FriendlyByteBuf extraData, MenuType<? extends AbstractMachineMenu> type, MachineInterfaceData machineData) {
+        this(id, inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(machineData.slotsCount), type, machineData);
     }
 
-    public AbstractMachineMenu(int id, Inventory inventory, BlockEntity entity, ContainerData data, MenuType<? extends AbstractMachineMenu> type) {
+    public AbstractMachineMenu(int id, Inventory inventory, BlockEntity entity, ContainerData data, MenuType<? extends AbstractMachineMenu> type, MachineInterfaceData machineData) {
         super(type, id);
+        this.machineData = machineData;
 
         blockEntity = (Entity) entity;
         this.level = inventory.player.level;
         this.containerData = data;
 
-        checkContainerSize(inventory, inventorySize);
+        checkContainerSize(inventory, machineData.slotsCount);
         addPlayerInventory(inventory);
         addPlayerHotbar(inventory);
 
@@ -51,9 +51,8 @@ public abstract class AbstractMachineMenu<Entity extends AbstractMachineBlockEnt
 
     private void createSlots(BlockEntity blockEntity) {
         blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER).ifPresent(handler -> {
-            MachineInterfaceData compressor = MachineInterfaces.COMPRESSOR;
-            for (int i = 0; i < compressor.slots.toArray().length; i++) {
-                MachineSlot slot = compressor.slots.get(i);
+            for (int i = 0; i < machineData.slots.size(); i++) {
+                MachineSlot slot = machineData.slots.get(i);
                 this.addSlot(new SlotItemHandler(handler, slot.index, slot.posX, slot.posY));
             }
         });
@@ -83,9 +82,6 @@ public abstract class AbstractMachineMenu<Entity extends AbstractMachineBlockEnt
     private static final int VANILLA_FIRST_SLOT_INDEX = 0;
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
-    // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 2;  // must be the number of slots you have!
-
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
         Slot sourceSlot = slots.get(index);
@@ -97,10 +93,10 @@ public abstract class AbstractMachineMenu<Entity extends AbstractMachineBlockEnt
         if (index < VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT) {
             // This is a vanilla container slot so merge the stack into the tile inventory
             if (!moveItemStackTo(sourceStack, TE_INVENTORY_FIRST_SLOT_INDEX, TE_INVENTORY_FIRST_SLOT_INDEX
-                    + TE_INVENTORY_SLOT_COUNT, false)) {
+                    + machineData.slotsCount, false)) {
                 return ItemStack.EMPTY;  // EMPTY_ITEM
             }
-        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + TE_INVENTORY_SLOT_COUNT) {
+        } else if (index < TE_INVENTORY_FIRST_SLOT_INDEX + machineData.slotsCount) {
             // This is a TE slot so merge the stack into the players inventory
             if (!moveItemStackTo(sourceStack, VANILLA_FIRST_SLOT_INDEX, VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT, false)) {
                 return ItemStack.EMPTY;

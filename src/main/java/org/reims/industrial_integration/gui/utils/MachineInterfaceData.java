@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.reims.industrial_integration.Industrial_Integration;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MachineInterfaceData {
     public final String UID, displayedName;
@@ -26,5 +27,11 @@ public class MachineInterfaceData {
         this.progressbar = progressbar;
         this.slots = slots;
         this.energyBar = energyBar;
+    }
+
+    public List<MachineSlot> getTypedSlots(MachineSlot.SlotType slotType) {
+        return slots.stream()
+                .filter(slot -> slot.type == slotType)
+                .collect(Collectors.toList());
     }
 }

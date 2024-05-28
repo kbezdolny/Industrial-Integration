@@ -1,7 +1,6 @@
 package org.reims.industrial_integration;
 
 import com.mojang.logging.LogUtils;
-import earth.terrarium.botarium.Botarium;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +12,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.jetbrains.annotations.NotNull;
-import org.reims.industrial_integration.block.ModBlocks;
+import org.reims.industrial_integration.block.custom.ModBlocks;
 import org.reims.industrial_integration.block.entity.ModBlockEntities;
 import org.reims.industrial_integration.gui.screen.CompressorScreen;
 import org.reims.industrial_integration.gui.screen.SlicerScreen;
