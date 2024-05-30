@@ -193,28 +193,46 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     protected static void craftItem(AbstractMachineBlockEntity blockEntity, SimpleContainer inventory,
                                     Optional<? extends AbstractMachineRecipe> recipe, MachineInterfaceData machineData) {
-        // TODO Make it more adaptive for more than one slot
         if (hasRecipe(inventory, recipe, machineData)) {
-            int inputsCount = 0;
-            for (int i = 0; i < machineData.slots.size(); i++) {
-                MachineSlot slot = machineData.slots.get(i);
-                switch (slot.type) {
-                    case INPUT:
-                        blockEntity.itemHandler.extractItem(slot.index, recipe.get().getRecipeItems().get(inputsCount).itemCount, false);
-                        inputsCount++;
-                        break;
-                    case OUTPUT:
-                        int index = i-inputsCount;
+            List<MachineSlot> inputSlots = machineData.getTypedSlots(MachineSlot.SlotType.INPUT);
+            for (MachineSlot slot : inputSlots) {
+                blockEntity.itemHandler.extractItem(slot.index, recipe.get().getRecipeItems().get(slot.index).itemCount, false);
+            }
 
-                        if (recipe.get().getResultItems() == null || recipe.get().getResultItems().size() <= index) {
-                            break;
+            List<RecipeDto.ItemInterface> resultItems = recipe.get().getResultItems();
+            List<MachineSlot> outputSlots = machineData.getTypedSlots(MachineSlot.SlotType.OUTPUT);
+
+            if (resultItems == null) {
+                return;
+            }
+
+            int nextFreeSlotIndex = outputSlots.get(0).index;
+            for (RecipeDto.ItemInterface resultItem : resultItems) {
+                int nextSlotIndex = nextFreeSlotIndex;
+                int itemCount = resultItem.itemCount;
+                for (MachineSlot slot : outputSlots) {
+                    if (!canInsertItemIntoOutputSlot(inventory, resultItem.itemStack, nextSlotIndex)) {
+                        nextSlotIndex++;
+                        continue;
+                    }
+
+                    if (!canInsertAmountIntoOutputSlot(inventory, nextSlotIndex, itemCount)) {
+                        int tempCount = inventory.getItem(nextSlotIndex).getMaxStackSize() - inventory.getItem(nextSlotIndex).getCount();
+                        if (tempCount > 0) {
+                            itemCount -= tempCount;
+                            blockEntity.itemHandler.setStackInSlot(nextSlotIndex, new ItemStack(resultItem.itemStack.copy().getItem(),
+                                    blockEntity.itemHandler.getStackInSlot(nextSlotIndex).getCount() + tempCount));
                         }
+                        nextSlotIndex++;
+                        continue;
+                    }
 
-                        RecipeDto.ItemInterface resultItem = recipe.get().getResultItems().get(index);
-                        blockEntity.itemHandler.setStackInSlot(slot.index, new ItemStack(resultItem.itemStack.copy().getItem(),
-                                blockEntity.itemHandler.getStackInSlot(slot.index).getCount() + resultItem.itemCount));
-                        break;
+                    blockEntity.itemHandler.setStackInSlot(nextSlotIndex, new ItemStack(resultItem.itemStack.copy().getItem(),
+                            blockEntity.itemHandler.getStackInSlot(nextSlotIndex).getCount() + itemCount));
+                    nextFreeSlotIndex++;
+                    break;
                 }
+
             }
 
             blockEntity.resetProgress();
@@ -222,26 +240,56 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     }
 
     protected static boolean hasRecipe(SimpleContainer inventory, Optional<? extends AbstractMachineRecipe> recipe, MachineInterfaceData machineData) {
-        // TODO Make it more adaptive for more than one slot
         if (recipe.isEmpty()) {
             return false;
         }
 
-        List<MachineSlot> slots = machineData.getTypedSlots(MachineSlot.SlotType.OUTPUT);
-        for (int i = 0; i < slots.size(); i++) {
-            MachineSlot slot = slots.get(i);
-            if (recipe.get().getResultItems() == null || recipe.get().getResultItems().size() <= i) {
-                continue;
-            }
-
-            ItemStack resultItem = recipe.get().getResultItems().get(i).itemStack;
-            if (!(canInsertAmountIntoOutputSlot(inventory, slot.index, resultItem.getCount())
-                    && canInsertItemIntoOutputSlot(inventory, resultItem, slot.index))) {
+        List<MachineSlot> inputSlots = machineData.getTypedSlots(MachineSlot.SlotType.INPUT);
+        for (MachineSlot slot : inputSlots) {
+            if (!enoughInputItem(inventory, recipe.get(), slot.index)) {
                 return false;
             }
         }
 
+        List<RecipeDto.ItemInterface> resultItems = recipe.get().getResultItems();
+        List<MachineSlot> outputSlots = machineData.getTypedSlots(MachineSlot.SlotType.OUTPUT);
+
+        if (resultItems == null) {
+            return false;
+        }
+
+        for (RecipeDto.ItemInterface resultItem : resultItems) {
+            int nextFreeSlotIndex = outputSlots.get(0).index;
+            int itemCount = resultItem.itemCount;
+            for (int i = 0; i < outputSlots.size(); i++) {
+                if (!canInsertItemIntoOutputSlot(inventory, resultItem.itemStack, nextFreeSlotIndex)) {
+                    if (isLastSlot(nextFreeSlotIndex, outputSlots.get(outputSlots.size()-1).index)) {
+                        return false;
+                    }
+
+                    nextFreeSlotIndex++;
+                    continue;
+                }
+
+                if (!canInsertAmountIntoOutputSlot(inventory, nextFreeSlotIndex, itemCount)) {
+                    if (isLastSlot(nextFreeSlotIndex, outputSlots.get(outputSlots.size()-1).index)) {
+                        return false;
+                    }
+
+                    itemCount -= inventory.getItem(nextFreeSlotIndex).getMaxStackSize() - inventory.getItem(nextFreeSlotIndex).getCount();
+                    nextFreeSlotIndex++;
+                    continue;
+                }
+
+                break;
+            }
+        }
+
         return true;
+    }
+
+    private static boolean isLastSlot(int slot, int lastSlot) {
+        return slot == lastSlot;
     }
 
     protected static SimpleContainer getInventory(AbstractMachineBlockEntity blockEntity) {
@@ -258,7 +306,7 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
     }
 
     protected static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory, int slot, int resultItemCount) {
-        return inventory.getItem(slot).getMaxStackSize() > inventory.getItem(slot).getCount()+resultItemCount;
+        return inventory.getItem(slot).getMaxStackSize() >= inventory.getItem(slot).getCount() + resultItemCount;
     }
 
     protected static boolean enoughInputItem(SimpleContainer inventory, AbstractMachineRecipe recipe, int ingredientSlot) {

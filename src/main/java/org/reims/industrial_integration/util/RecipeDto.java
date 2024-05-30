@@ -11,27 +11,27 @@ import org.jetbrains.annotations.Nullable;
 public class RecipeDto {
     public static class ItemInterface {
         public @Nullable Ingredient itemIngredient;
-        public @Nullable ItemStack itemStack;
+        public ItemStack itemStack;
         public final int itemCount;
 
         public ItemInterface() {
             this.itemCount = 0;
         }
 
-        public ItemInterface(@Nullable Ingredient itemIngredient, int itemCount) {
+        public ItemInterface(Ingredient itemIngredient, int itemCount) {
             this.itemIngredient = itemIngredient;
             this.itemCount = itemCount;
             this.itemStack = itemIngredient.getItems()[0];
             this.itemStack.setCount(itemCount);
         }
 
-        public ItemInterface(@Nullable ItemStack itemStack, int itemCount) {
+        public ItemInterface(ItemStack itemStack, int itemCount) {
             itemStack.setCount(itemCount);
             this.itemStack = itemStack;
             this.itemCount = itemCount;
         }
 
-        public ItemInterface(@Nullable ItemStack itemStack) {
+        public ItemInterface(ItemStack itemStack) {
             this.itemStack = itemStack;
             this.itemCount = itemStack.getCount();
         }

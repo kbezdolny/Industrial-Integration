@@ -25,8 +25,9 @@ public abstract class AbstractMachineRecipe implements Recipe<SimpleContainer> {
     protected final ResourceLocation id;
     protected final int craftDuration;
     protected final int energyReq;
-    protected NonNullList<RecipeDto.ItemInterface> recipeItems;
-    protected NonNullList<RecipeDto.ItemInterface> resultItems;
+    protected final NonNullList<RecipeDto.ItemInterface> recipeItems;
+    protected final NonNullList<RecipeDto.ItemInterface> resultItems;
+    //protected int countOfFreeOutputSlots = 0;
 
     public AbstractMachineRecipe(ResourceLocation id, RecipeDto recipeDto, MachineInterfaceData machineData) {
         this.machineData = machineData;
@@ -35,10 +36,7 @@ public abstract class AbstractMachineRecipe implements Recipe<SimpleContainer> {
         this.resultItems = recipeDto.resultItems;
         this.craftDuration = recipeDto.craftDuration;
         this.energyReq = recipeDto.energyReq;
-    }
-
-    public NonNullList<RecipeDto.ItemInterface> getRecipeItems() {
-        return recipeItems;
+        //this.countOfFreeOutputSlots = recipeDto.countOfFreeOutputSlots;
     }
 
     @Override
@@ -72,6 +70,10 @@ public abstract class AbstractMachineRecipe implements Recipe<SimpleContainer> {
         return null;
     }
 
+    public NonNullList<RecipeDto.ItemInterface> getRecipeItems() {
+        return recipeItems;
+    }
+
     @Override
     public ItemStack getResultItem() {
         return null;
@@ -79,6 +81,10 @@ public abstract class AbstractMachineRecipe implements Recipe<SimpleContainer> {
 
     public NonNullList<RecipeDto.ItemInterface> getResultItems() {
         return resultItems;
+    }
+
+    public int getCountOfFreeOutputSlots() {
+        return machineData.getTypedSlots(MachineSlot.SlotType.OUTPUT).size() - getRecipeItems().size();
     }
 
     public int getCraftDuration() {
