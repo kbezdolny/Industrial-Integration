@@ -212,11 +212,19 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
                 int itemCount = resultItem.itemCount;
                 for (MachineSlot slot : outputSlots) {
                     if (!canInsertItemIntoOutputSlot(inventory, resultItem.itemStack, nextSlotIndex)) {
+                        if (isLastSlot(nextSlotIndex, outputSlots.get(outputSlots.size()-1).index)) {
+                            break;
+                        }
+
                         nextSlotIndex++;
                         continue;
                     }
 
                     if (!canInsertAmountIntoOutputSlot(inventory, nextSlotIndex, itemCount)) {
+                        if (isLastSlot(nextSlotIndex, outputSlots.get(outputSlots.size()-1).index)) {
+                            break;
+                        }
+
                         int tempCount = inventory.getItem(nextSlotIndex).getMaxStackSize() - inventory.getItem(nextSlotIndex).getCount();
                         if (tempCount > 0) {
                             itemCount -= tempCount;
@@ -251,10 +259,14 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
             }
         }
 
-        List<RecipeDto.ItemInterface> resultItems = recipe.get().getResultItems();
         List<MachineSlot> outputSlots = machineData.getTypedSlots(MachineSlot.SlotType.OUTPUT);
+        List<RecipeDto.ItemInterface> resultItems = recipe.get().getResultItems();
 
         if (resultItems == null) {
+            return false;
+        }
+
+        if (getFullSlotsCount(inventory) > outputSlots.size()-resultItems.size()) {
             return false;
         }
 
@@ -311,6 +323,17 @@ public abstract class AbstractMachineBlockEntity extends BlockEntity implements 
 
     protected static boolean enoughInputItem(SimpleContainer inventory, AbstractMachineRecipe recipe, int ingredientSlot) {
         return inventory.getItem(ingredientSlot).getCount() >= recipe.getRecipeItems().get(ingredientSlot).itemCount;
+    }
+
+    protected static int getFullSlotsCount(SimpleContainer inventory) {
+        int fullSlotsCount = 0;
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            if (inventory.getItem(i).getCount() == inventory.getMaxStackSize()) {
+                fullSlotsCount++;
+            }
+        }
+
+        return fullSlotsCount;
     }
 
     public static void customTick(Level level, BlockPos blockPos, BlockState state,
